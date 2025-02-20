@@ -7,7 +7,7 @@ import java.awt.*;
  * It extends creates a new TowerPanel object to display the game.
  * Define number of disks and window size.
  *
- * @author Paulo Aguirre and Andrea Salazar Santos
+ * @author Paulo Aguirre and Tanner Tran
  */
 public class GameMain extends JFrame {
 
@@ -15,18 +15,11 @@ public class GameMain extends JFrame {
 
     TowerPanel towerPanel = new TowerPanel();
     ChatPanel chatPanel = new ChatPanel();
-    WeatherPanel weatherPanel = new WeatherPanel();
-    MapPanel mapPanel = new MapPanel();
     JPanel rightPanel = new JPanel();
-    JPanel bottomPanel = new JPanel();
 
-    rightPanel.setLayout (new GridLayout(2,1));
+    rightPanel.setLayout (new GridLayout(1,2));
     rightPanel.add(towerPanel);
-    rightPanel.add(bottomPanel);
 
-    bottomPanel.setLayout (new GridLayout(1,2));
-    bottomPanel.add(weatherPanel);
-    bottomPanel.add(mapPanel);
     this.setLayout (new GridLayout(1,2));
     add(chatPanel);
     add(rightPanel);
@@ -55,7 +48,7 @@ public class GameMain extends JFrame {
 
     GameMain main = new GameMain();
     main.setTitle("Towers of Hanoi");
-    main.setSize(800, 500 );
+    main.setSize(1600, 1000 );
     main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     main.setVisible(true);
   }
