@@ -17,9 +17,10 @@ public class ChatPanel extends JPanel {
     JLabel testLabel = new JLabel("<html>Hello Player<br/><br/>" +
             "Welcome to Towers of Hanoi!!<br/><br/>" + "Move all four disk to another pole to win!!<br/><br/>"+
             "Rules:<br/>" +
-            "1. Only one disk can be moved at a time<br/>" +
-            "2. A larger disk cannot be placed on top of a small one</html>");
-    testLabel.setFont(new Font("Serif", 0, 17));
+            "1. Press and drag a disk to another pole.<br/>" +
+            "2. Only one disk can be moved at a time.<br/>" +
+            "3. A larger disk cannot be placed on top of a small one.</html>");
+    testLabel.setFont(new Font("Serif", Font.BOLD, 15));
     testLabel.setForeground(Color.GREEN);
     add(testLabel);
     JLabel chatPlaceHolder = new JLabel("<html>> Have Fun!!!</html>");

@@ -23,6 +23,17 @@ class TowerPanel extends JPanel implements PropertyChangeListener {
       disk.draw(g);
       //change to have disk given to first tower on initial state
     }
+    // title
+    String title = "Towers of Hanoi";
+    Font titleFont = new Font("Impact", Font.PLAIN, 40);
+    g.setFont(titleFont);
+    g.setColor(Color.RED);
+
+    FontMetrics metrics = g.getFontMetrics(titleFont);
+    int x = (getWidth() - metrics.stringWidth(title)) / 2;
+    int y = (getHeight() - metrics.getHeight()) / 2 + metrics.getAscent() - 175;
+
+    g.drawString(title, x, y);
   }
 
   @Override
