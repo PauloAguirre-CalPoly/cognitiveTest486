@@ -23,13 +23,22 @@ public class GameData extends PropertyChangeSupport {
   private Disk selectedDisk = null;
   private int mouseYOffset = 0;
   private boolean playerWin = false;
+  private ArrayList<String> data;
 
   private GameData(int nDisks) {
     super(new Object());
     this.nDisks = nDisks;
     towers = new ArrayList<>();
     disks = new ArrayList<>();
+    data = new ArrayList<>();
     this.recalculate();
+  }
+
+  public void addData(String str) {
+    data.add(str);
+  }
+  public ArrayList<String> getData() {
+    return data;
   }
 
   public void recalculate () {

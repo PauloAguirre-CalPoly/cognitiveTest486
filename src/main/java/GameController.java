@@ -1,6 +1,7 @@
 import java.awt.event.*;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.removeKeyListener;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The controller for the Towers of Hanoi game.
@@ -11,14 +12,13 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.removeKeyListener;
  */
 public class GameController implements MouseListener, MouseMotionListener, ComponentListener {
 
+  private int initialY;
   private int initialX;
   private ChatPanel chat;
 
   public GameController(ChatPanel chat) {
     this.chat = chat;
   }
-
-  private int initialY;
 
   public void mousePressed(MouseEvent e) {
     for (int i = GameData.getInstance().getDisks().size() - 1; i >= 0; i--) {
@@ -42,6 +42,8 @@ public class GameController implements MouseListener, MouseMotionListener, Compo
   }
 
   public void mouseReleased(MouseEvent e) {
+    //BufferedWriter out = new BufferedWriter(fstream);
+
     boolean moved = false;
     if (GameData.getInstance().getSelectedDisk() != null) {
       for (Tower tower : GameData.getInstance().getTowers()) {
@@ -53,14 +55,14 @@ public class GameController implements MouseListener, MouseMotionListener, Compo
           tower.dropDisk(GameData.getInstance().getSelectedDisk());
           tower.setSelected(true);
           moved = true;
-          for (Tower otherT : GameData.getInstance().getTowers()){
-            if(!tower.equals(otherT)){
+          for (Tower otherT : GameData.getInstance().getTowers()) {
+            if (!tower.equals(otherT)) {
               otherT.resetLastDiskWidth(diskW);
             }
           }
-          if(GameData.getInstance().isPlayerWin()){
+          if (GameData.getInstance().isPlayerWin()) {
             chat.playerWinMSG();
-          }else{
+          } else {
             chat.moveMSG(moved);
           }
         } else {
@@ -75,11 +77,17 @@ public class GameController implements MouseListener, MouseMotionListener, Compo
       GameData.getInstance().setSelectedDisk(null);
       GameData.getInstance().repaint();
     }
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    String formattedTime = now.format(formatter);
+    GameData.getInstance().addData("x: " + e.getX()
+            +  " y: " + e.getY() + " "+ moved + " "+ formattedTime);
   }
 
   public void mouseDragged(MouseEvent e) {
     if (GameData.getInstance().getSelectedDisk() != null) {
       for (Tower tower : GameData.getInstance().getTowers()) {
+          tower.setSelected(tower.contains(e.getX(), e.getY()));
         if (tower.contains(e.getX(), e.getY())) {
           tower.setSelected(true);
         } else {
@@ -125,4 +133,5 @@ public class GameController implements MouseListener, MouseMotionListener, Compo
   @Override
   public void componentHidden(ComponentEvent e) {
   }
+
 }

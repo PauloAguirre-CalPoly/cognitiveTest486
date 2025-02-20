@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 /**
@@ -11,7 +15,7 @@ import java.awt.*;
  */
 public class GameMain extends JFrame {
 
-  public GameMain() {
+  public GameMain() throws IOException {
 
     TowerPanel towerPanel = new TowerPanel();
     ChatPanel chatPanel = new ChatPanel();
@@ -44,7 +48,11 @@ public class GameMain extends JFrame {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      saveDataToFile("output.txt", "Test");
+    }));
 
     GameMain main = new GameMain();
     main.setTitle("Towers of Hanoi");
@@ -52,4 +60,19 @@ public class GameMain extends JFrame {
     main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     main.setVisible(true);
   }
+
+  private static void saveDataToFile(String filePath, String data) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+      int i = 0;
+      while(GameData.getInstance().getData().get(i) != null) {
+        writer.write(GameData.getInstance().getData().get(i) + "\n");
+        i++;
+      }
+     // writer.write(data);
+      System.out.println("Data saved to " + filePath);
+    } catch (IOException e) {
+      System.err.println("Error saving data to file: " + e.getMessage());
+    }
+  }
+
 }
