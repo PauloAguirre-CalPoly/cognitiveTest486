@@ -65,8 +65,8 @@ public class GameMain extends JFrame {
   private static void saveDataToFile(String filePath, String data) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
       int i = 0;
-      while(GameData.getInstance().getData().get(i) != null) {
-        writer.write(GameData.getInstance().getData().get(i) + "\n");
+      while(GameData.getInstance().getAppData().get(i) != null) {
+        writer.write(GameData.getInstance().getAppData().get(i) + "\n");
         i++;
       }
      // writer.write(data);

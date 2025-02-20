@@ -80,7 +80,7 @@ public class GameController implements MouseListener, MouseMotionListener, Compo
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     String formattedTime = now.format(formatter);
-    GameData.getInstance().addData("x: " + e.getX()
+    GameData.getInstance().addAppData("x: " + e.getX()
             +  " y: " + e.getY() + " "+ moved + " "+ formattedTime);
   }
 
