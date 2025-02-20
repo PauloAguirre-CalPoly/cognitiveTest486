@@ -24,9 +24,11 @@ public class GameMain extends JFrame {
     rightPanel.setLayout (new GridLayout(1,2));
     rightPanel.add(towerPanel);
 
-    this.setLayout (new GridLayout(1,2));
-    add(chatPanel);
+    this.setLayout (new GridLayout(2,1));
     add(rightPanel);
+    add(chatPanel);
+
+
 
     GameController controller = new GameController(chatPanel);
 
