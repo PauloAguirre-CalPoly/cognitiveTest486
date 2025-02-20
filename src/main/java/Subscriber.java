@@ -11,24 +11,41 @@ import java.io.IOException;
  * @author Paulo and Tanner
  * @version 1.0
  */
-public class Subscriber implements MqttCallback {
+public class Subscriber implements MqttCallback, Runnable {
 	
 	private final static String BROKER = "tcp://test.mosquitto.org:1883";
 	private final static String TOPIC = "Lab5_Tanner_Paulo";
 	private final static String CLIENT_ID = "jgs-subscriber";
 	//public static BufferedWriter out = null;
 
-	public static void main(String[] args) throws MqttException {
+	@Override
+	public void run() {
+        MqttClient client = null;
+        try {
+			client = new MqttClient(BROKER, CLIENT_ID);
+			Subscriber subscriber = new Subscriber();
+			client.setCallback(subscriber);
+			client.connect();
+			System.out.println("Connected to BROKER: " + BROKER);
+			client.subscribe(TOPIC);
+			System.out.println("Subscribed to TOPIC: " + TOPIC);
+        } catch (MqttException e) {
+            throw new RuntimeException(e);
+        }
 
-		MqttClient client = new MqttClient(BROKER, CLIENT_ID);
-		Subscriber subscriber = new Subscriber();
-		client.setCallback(subscriber);
-		client.connect();
-		System.out.println("Connected to BROKER: " + BROKER);
-		client.subscribe(TOPIC);
-		System.out.println("Subscribed to TOPIC: " + TOPIC);
+	}
 
-    }
+//	public static void main(String[] args) throws MqttException {
+//
+//		MqttClient client = new MqttClient(BROKER, CLIENT_ID);
+//		Subscriber subscriber = new Subscriber();
+//		client.setCallback(subscriber);
+//		client.connect();
+//		System.out.println("Connected to BROKER: " + BROKER);
+//		client.subscribe(TOPIC);
+//		System.out.println("Subscribed to TOPIC: " + TOPIC);
+//
+//    }
 	
 	@Override
 	public void connectionLost(Throwable throwable) {
@@ -39,6 +56,7 @@ public class Subscriber implements MqttCallback {
 	public void messageArrived(String s, MqttMessage mqttMessage) throws IOException {
 		System.out.println("Message arrived. Topic: " + s +
 			" Message: " + new String(mqttMessage.getPayload()));
+		GameData.getInstance().addDeviceData(new String(mqttMessage.getPayload()));
 	}
 	
 	@Override

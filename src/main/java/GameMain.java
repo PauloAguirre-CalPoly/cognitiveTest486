@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -14,7 +15,7 @@ import java.io.IOException;
  */
 public class GameMain extends JFrame {
 
-  public GameMain() throws IOException {
+  public GameMain() {
 
     TowerPanel towerPanel = new TowerPanel();
     ChatPanel chatPanel = new ChatPanel();
@@ -52,28 +53,44 @@ public class GameMain extends JFrame {
   public static void main(String[] args) throws IOException {
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      saveDataToFile("output.txt", "Test");
+      saveDataToFile("appData.csv", GameData.getInstance().getAppData());
+    }));
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      saveDataToFile("devData.csv", GameData.getInstance().getDeviceData());
     }));
 
+    Subscriber sub = new Subscriber();
+    Publisher pub = new Publisher();
+
+    Thread modelThread1 = new Thread(sub);
+    Thread modelThread2 = new Thread(pub);
+
+    modelThread2.start();
+    modelThread1.start();
+
     GameMain main = new GameMain();
+
     main.setTitle("Towers of Hanoi");
     main.setSize(1600, 1000 );
     main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     main.setVisible(true);
   }
 
-  private static void saveDataToFile(String filePath, String data) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+  private static void saveDataToFile(String appData, ArrayList<String> list) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(appData))) {
       int i = 0;
-      while(GameData.getInstance().getAppData().get(i) != null) {
-        writer.write(GameData.getInstance().getAppData().get(i) + "\n");
+      //GameData.getInstance().getAppData().get(i) != null
+      while(list.get(i) != null) {
+        writer.write(list.get(i) + "\n");
         i++;
       }
      // writer.write(data);
-      System.out.println("Data saved to " + filePath);
+      System.out.println("Data saved to " + appData);
     } catch (IOException e) {
       System.err.println("Error saving data to file: " + e.getMessage());
     }
+
   }
+
 
 }
